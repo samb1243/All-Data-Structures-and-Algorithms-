@@ -42,24 +42,38 @@ public class AVLTree {
 
         // Left Left Case
         if (balance > 1 && value < node.left.value) {
-            return rightRotate(node);
+            snapshot("Left-Left imbalance detected (before right rotation):");
+            Node res = rightRotate(node);
+            snapshot("After right rotation:");
+            return res;
         }
 
         // Right Right Case
         if (balance < -1 && value > node.right.value) {
-            return leftRotate(node);
+            snapshot("Right-Right imbalance detected (before left rotation):");
+            Node res = leftRotate(node);
+            snapshot("After left rotation:");
+            return res;
         }
 
         // Left Right Case
         if (balance > 1 && value > node.left.value) {
+            snapshot("Left-Right imbalance detected (before left rotation on left child):");
             node.left = leftRotate(node.left);
-            return rightRotate(node);
+            snapshot("After left rotation on left child (before right rotation):");
+            Node res = rightRotate(node);
+            snapshot("After right rotation:");
+            return res;
         }
 
         // Right Left Case
         if (balance < -1 && value < node.right.value) {
+            snapshot("Right-Left imbalance detected (before right rotation on right child):");
             node.right = rightRotate(node.right);
-            return leftRotate(node);
+            snapshot("After right rotation on right child (before left rotation):");
+            Node res = leftRotate(node);
+            snapshot("After left rotation:");
+            return res;
         }
 
         return node; // Return the unchanged node pointer
@@ -178,5 +192,56 @@ public class AVLTree {
             current = current.left;
         }
         return current;
+    }
+
+    // Public helper: print inorder traversal
+    public void printInOrder() {
+        inorderPrint(root);
+        System.out.println();
+    }
+
+    private void inorderPrint(Node node) {
+        if (node == null) return;
+        inorderPrint(node.left);
+        System.out.print(node.value + " ");
+        inorderPrint(node.right);
+    }
+
+    // Public helper: print level-order (tree view)
+    public void printLevelOrder() {
+        if (root == null) {
+            System.out.println("(empty)");
+            return;
+        }
+        java.util.Queue<Node> q = new java.util.LinkedList<>();
+        q.add(root);
+        int level = 0;
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
+            System.out.print("Level " + level + ": ");
+            for (int i = 0; i < levelSize; i++) {
+                Node n = q.remove();
+                System.out.print(n.value + " ");
+                if (n.left != null) q.add(n.left);
+                if (n.right != null) q.add(n.right);
+            }
+            System.out.println();
+            level++;
+        }
+    }
+
+    // Insert and visualize before/after
+    public void insertAndVisualize(int value) {
+        System.out.println("Before insert:");
+        printLevelOrder();
+        insert(value);
+        System.out.println("After insert:");
+        printLevelOrder();
+    }
+
+    // Internal snapshot helper used around rotations
+    private void snapshot(String msg) {
+        System.out.println(msg);
+        printLevelOrder();
     }
 }

@@ -24,6 +24,11 @@ public class Explore {
             System.out.println(" 0) Exit");
             System.out.print("Selection: ");
 
+            if (!scanner.hasNextLine()) {
+                System.out.println("No input available. Exiting.");
+                scanner.close();
+                return;
+            }
             String line = scanner.nextLine().trim();
             if (line.isEmpty()) continue;
             int choice;
@@ -40,28 +45,28 @@ public class Explore {
                     scanner.close();
                     return;
                 case 1:
-                    runBubbleSort();
+                    runBubbleSort(scanner);
                     break;
                 case 2:
-                    runInsertionSort();
+                    runInsertionSort(scanner);
                     break;
                 case 3:
-                    runSelectionSort();
+                    runSelectionSort(scanner);
                     break;
                 case 4:
-                    runQuickSort();
+                    runQuickSort(scanner);
                     break;
                 case 5:
-                    runMergeSort();
+                    runMergeSort(scanner);
                     break;
                 case 6:
-                    runRadixSort();
+                    runRadixSort(scanner);
                     break;
                 case 7:
-                    runStableSort();
+                    runStableSort(scanner);
                     break;
                 case 8:
-                    runCoinFlipDefault();
+                    runCoinFlip(scanner);
                     break;
                 case 9:
                     MaxHeap.main(new String[0]);
@@ -73,19 +78,19 @@ public class Explore {
                     List.main(new String[0]);
                     break;
                 case 12:
-                    runQueueDemo();
+                    runQueueDemo(scanner);
                     break;
                 case 13:
-                    runStackDemo();
+                    runStackDemo(scanner);
                     break;
                 case 14:
-                    runTreeDemo();
+                    runTreeDemo(scanner);
                     break;
                 case 15:
-                    runAVLDemo();
+                    runAVLDemo(scanner);
                     break;
                 case 16:
-                    runRecurrenceDefault();
+                    runRecurrence(scanner);
                     break;
                 default:
                     System.out.println("Choice not recognised.");
@@ -95,103 +100,148 @@ public class Explore {
         }
     }
 
-    private static void runBubbleSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runBubbleSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers for Bubble Sort (space or comma separated), or press Enter for default:");
         BubbleSort.bubbleSort(arr);
         printArray(arr);
     }
 
-    private static void runInsertionSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runInsertionSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers for Insertion Sort (space or comma separated), or press Enter for default:");
         InsertionSort.insertionSort(arr);
         printArray(arr);
     }
 
-    private static void runSelectionSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runSelectionSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers for Selection Sort (space or comma separated), or press Enter for default:");
         SelectionSort.selectionSort(arr);
         printArray(arr);
     }
 
-    private static void runQuickSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runQuickSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers for Quick Sort (space or comma separated), or press Enter for default:");
         QuickSort.quickSort(arr, 0, arr.length - 1);
         printArray(arr);
     }
 
-    private static void runMergeSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runMergeSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers for Merge Sort (space or comma separated), or press Enter for default:");
         MergeSort.mergeSort(arr, 0, arr.length - 1);
         printArray(arr);
     }
 
-    private static void runRadixSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runRadixSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter non-negative integers for Radix Sort (space or comma separated), or press Enter for default:");
         RadixSort.radixSort(arr);
         printArray(arr);
     }
 
-    private static void runStableSort() {
-        int[] arr = {5, 3, 8, 1, 2};
+    private static void runStableSort(java.util.Scanner scanner) {
+        int[] def = {5, 3, 8, 1, 2};
+        int[] arr = readIntArray(scanner, def, "Enter integers (0-9) for Stable Sort (space or comma separated), or press Enter for default:");
         StableSort.stableSort(arr);
         printArray(arr);
     }
 
-    private static void runCoinFlipDefault() {
+    private static void runCoinFlip(java.util.Scanner scanner) {
         try {
-            String[] a = {"10", "100"};
+            System.out.println("Enter n m for Coin Flipping Simulation (n flips per trial, m trials), or press Enter for defaults 10 100:");
+            String line = scanner.nextLine().trim();
+            String[] a;
+            if (line.isEmpty()) {
+                a = new String[]{"10", "100"};
+            } else {
+                String[] parts = line.split("\\s+");
+                if (parts.length >= 2) a = new String[]{parts[0], parts[1]};
+                else {
+                    System.out.println("Need two integers; using defaults.");
+                    a = new String[]{"10", "100"};
+                }
+            }
             CoinFlippingSimulation.main(a);
         } catch (Exception e) {
             System.out.println("CoinFlippingSimulation failed: " + e.getMessage());
         }
     }
 
-    private static void runQueueDemo() {
-        Queue q = new Queue(5);
-        q.enqueue(1);
-        q.enqueue(2);
-        q.enqueue(3);
+    private static void runQueueDemo(java.util.Scanner scanner) {
+        System.out.println("Enter integers to enqueue into Queue (space or comma separated), or press Enter for default 1 2 3:");
+        int[] arr = readIntArray(scanner, new int[]{1,2,3}, "");
+        Queue q = new Queue(Math.max(5, arr.length + 2));
+        for (int v : arr) q.enqueue(v);
         System.out.print("Dequeued: ");
         System.out.println(q.dequeue());
     }
 
-    private static void runStackDemo() {
-        Stack s = new Stack(5);
-        s.push(10);
-        s.push(20);
+    private static void runStackDemo(java.util.Scanner scanner) {
+        System.out.println("Enter integers to push onto Stack (space or comma separated), or press Enter for default 10 20:");
+        int[] arr = readIntArray(scanner, new int[]{10,20}, "");
+        Stack s = new Stack(Math.max(5, arr.length + 2));
+        for (int v : arr) s.push(v);
         System.out.print("Popped: ");
         System.out.println(s.pop());
     }
 
-    private static void runTreeDemo() {
+    private static void runTreeDemo(java.util.Scanner scanner) {
+        System.out.println("Enter integers to insert into Tree (space or comma separated), or press Enter for default 5 3 7 1 4:");
+        int[] arr = readIntArray(scanner, new int[]{5,3,7,1,4}, "");
         Tree t = new Tree();
-        t.insert(5);
-        t.insert(3);
-        t.insert(7);
-        t.insert(1);
-        t.insert(4);
+        for (int v : arr) t.insert(v);
         System.out.print("Inorder traversal: ");
         t.inorder();
         System.out.println();
     }
 
-    private static void runAVLDemo() {
+    private static void runAVLDemo(java.util.Scanner scanner) {
+        System.out.println("Enter integers to insert into AVLTree (space or comma separated), or press Enter for default 5 3 7 2 4:");
+        int[] arr = readIntArray(scanner, new int[]{5,3,7,2,4}, "");
         AVLTree avl = new AVLTree();
-        avl.insert(5);
-        avl.insert(3);
-        avl.insert(7);
-        avl.insert(2);
-        avl.insert(4);
-        System.out.println("Inserted sample values into AVLTree (no public traversal available).");
+        for (int v : arr) {
+            avl.insertAndVisualize(v);
+        }
+        System.out.println("Completed AVL inserts and visualizations.");
     }
 
-    private static void runRecurrenceDefault() {
+    private static void runRecurrence(java.util.Scanner scanner) {
         try {
-            String[] a = {"5"};
+            System.out.println("Enter n for Recurrence (or press Enter for default n=5):");
+            String line = scanner.nextLine().trim();
+            String[] a;
+            if (line.isEmpty()) a = new String[]{"5"};
+            else a = new String[]{line.split("\\s+")[0]};
             Recurrence.main(a);
         } catch (Exception e) {
             System.out.println("Recurrence failed: " + e.getMessage());
         }
+    }
+
+    /**
+     * Read an int array from the scanner. If the user presses Enter, return the default array.
+     */
+    private static int[] readIntArray(java.util.Scanner scanner, int[] def, String prompt) {
+        if (prompt != null && !prompt.isEmpty()) System.out.println(prompt);
+        String line = scanner.nextLine().trim();
+        if (line.isEmpty()) return def.clone();
+        String[] parts = line.split("[,\\s]+");
+        java.util.List<Integer> vals = new java.util.ArrayList<>();
+        for (String p : parts) {
+            if (p.length() == 0) continue;
+            try {
+                vals.add(Integer.parseInt(p));
+            } catch (NumberFormatException e) {
+                System.out.println("Skipping invalid number: " + p);
+            }
+        }
+        if (vals.isEmpty()) return def.clone();
+        int[] out = new int[vals.size()];
+        for (int i = 0; i < vals.size(); i++) out[i] = vals.get(i);
+        return out;
     }
 
     private static void printArray(int[] arr) {
