@@ -17,6 +17,9 @@ public class BubbleSort {
     }
 
     public static void bubbleSort(int[] arr) {
+        System.out.println("Initial array: ");
+        printArray(arr);
+        
         int n = arr.length;
         boolean swapped;
 
